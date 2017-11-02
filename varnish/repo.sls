@@ -35,7 +35,7 @@ varnish_repo_{{ component }}:
   pkgrepo.managed:
     - name: varnish
     - humanname: Varnish for Enterprise Linux el{{ salt['grains.get']('osmajorrelease') }} - $basearch
-    - baseurl: https://packagecloud.io/varnishcache/varnish30/el{{ salt['grains.get']('osmajorrelease') }}/$basearch
+    - baseurl: https://packagecloud.io/varnishcache/varnish30/el/{{ salt['grains.get']('osmajorrelease') }}/$basearch
     - gpgcheck: 0
     - require_in:
       - pkg: varnish

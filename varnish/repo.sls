@@ -14,15 +14,15 @@ varnish_repo_curl:
 varnish_repo:
   # Import varnish repo GPG key
   cmd.run:
-    - name: /usr/bin/curl http://repo.varnish-cache.org/{{ salt['grains.get']('os')|lower }}/GPG-key.txt | sudo apt-key add -
-    - unless: /usr/bin/apt-key adv --list-key C4DEFFEB
+    - name: /usr/bin/curl https://packagecloud.io/varnishcache/varnish30/gpgkey | sudo apt-key add -
+    - unless: /usr/bin/apt-key adv --list-key EE2C594C
     - require:
       - pkg: varnish_repo_curl
 # NOTE: pkgrepo state module requires "require_in" in order to play nice with
 # the pkg state module.
   pkgrepo.managed:
-    - name: deb http://repo.varnish-cache.org/{{ salt['grains.get']('os')|lower }}/ {{ salt['grains.get']('oscodename')}} {{ varnish.repo.components | join(' ') }}
-    - file: /etc/apt/sources.list.d/varnish.list
+    - name: deb https://packagecloud.io/varnishcache/varnish30/debian/ {{ salt['grains.get']('oscodename')}} main
+    - file: /etc/apt/sources.list.d/varnishcache_varnish30.list
     - require:
       - cmd: varnish_repo
     - require_in:
@@ -35,7 +35,7 @@ varnish_repo_{{ component }}:
   pkgrepo.managed:
     - name: varnish
     - humanname: Varnish for Enterprise Linux el{{ salt['grains.get']('osmajorrelease') }} - $basearch
-    - baseurl: http://repo.varnish-cache.org/redhat/{{ component }}/el{{ salt['grains.get']('osmajorrelease') }}/$basearch
+    - baseurl: https://packagecloud.io/varnishcache/varnish30/el/{{ salt['grains.get']('osmajorrelease') }}/$basearch
     - gpgcheck: 0
     - require_in:
       - pkg: varnish
